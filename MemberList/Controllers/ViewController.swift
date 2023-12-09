@@ -17,7 +17,7 @@ final class ViewController: UIViewController {
     //네비게이션 바에 넣기 위한 버튼
     lazy var plusButton: UIBarButtonItem = {
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(plusButtonTapped))
-        retunr button
+        return button
     }()
 
 

@@ -52,6 +52,8 @@ class MyTableViewCell: UITableViewCell {
         return sv
     }()
     
+    // MARK: - 생성자 세팅
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         setupStackView()
