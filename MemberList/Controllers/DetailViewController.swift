@@ -10,29 +10,42 @@ import PhotosUI
 
 final class DetailViewController: UIViewController {
 
+    //MVC패턴을 위한 따로만든 뷰
     private let detailView = DetailView()
     
+    //대리자 설정을 위한 변수(델리게이트)
+    weak var delegate: MemberDelegate?
+    
+    //전화면에서 Member데이터를 전달 받기 위한 변수
     var member: Member?
     
+    //MVC패턴을 위해서, view교체
     override func loadView() {
         view = detailView
     }
     
+    // MARK: - viewDidLoad
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupData()
         setupButtonAction()
         setupTapGestures()
     }
-    func setupData() {
+    
+    //멤버를 뷰에 전달⭐️ (뷰에서 알아서 화면 세팅)
+    private func setupData() {
         detailView.member = member
     }
     
+    //뷰에 있는 버튼의 타겟 설정
     func setupButtonAction() {
         detailView.saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
     // MARK: - 이미지뷰가 눌렸을 때의 동작 실행
+    
     //제스쳐 설정 (이미지뷰가 눌리면, 실행)
     func setupTapGestures() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchUpImageview))
@@ -43,6 +56,7 @@ final class DetailViewController: UIViewController {
     @objc func touchUpImageview() {
         print("이미지뷰 터치")
         
+        //기본 설정 세팅
         var configuration = PHPickerConfiguration()
         configuration.selectionLimit = 0
         configuration.filter = .any(of: [.images, .videos])
@@ -55,6 +69,8 @@ final class DetailViewController: UIViewController {
         self.present(picker, animated: true, completion: nil)
     }
     
+    // MARK: - SAVE버튼 또는 UPDATE버튼이 눌렀을때의 동작
+
     @objc func saveButtonTapped() {
         print("버튼이 눌림")
         
@@ -71,15 +87,15 @@ final class DetailViewController: UIViewController {
             Member(name: name, age: age, phone: phoneNumber, address: address)
             newMember.memberImage = detailView.mainImageView.image
             
-            // 1) 델리게이트 방식이 아닌 구현⭐️
-            let index = navigationController!.viewControllers.count - 2
-            //전화면에 접근하기 위함
-            let vc = navigationController?.viewControllers[index] as! ViewController
-            //전화면의 모델에 접근해서 멤버를 추가
-            vc.memberListManager.makeNewMember(newMember)
+//            // 1) 델리게이트 방식이 아닌 구현⭐️
+//            let index = navigationController!.viewControllers.count - 2
+//            //전화면에 접근하기 위함
+//            let vc = navigationController?.viewControllers[index] as! ViewController
+//            //전화면의 모델에 접근해서 멤버를 추가
+//            vc.memberListManager.makeNewMember(newMember)
             
             // 2) 델리게이트 방식으로 구현⭐️
-            //delegate?.addNewMember(newMember)
+            delegate?.addNewMember(newMember)
             
             // [2] 멤버가 있다면 (멤버의 내용을 업데이트 하기 위한 설정)
         } else {
@@ -95,23 +111,28 @@ final class DetailViewController: UIViewController {
             //뷰에도 바뀐 멤버를 전달 (뷰컨트롤러 ==> 뷰)
             detailView.member = member
             
-            //1) 델리게이트 방식이 아닌 구현⭐️
-            let index = navigationController!.viewControllers.count - 2
-            //전 화면에 접근하기 위함
-            let vc = navigationController?.viewControllers[index] as! ViewController
-            //전 화면의 모델에 접근해서 멤버를 업데이트
-            vc.memberListManager.updateMemberInfo(index: memberId, member!)
+//            //1) 델리게이트 방식이 아닌 구현⭐️
+//            let index = navigationController!.viewControllers.count - 2
+//            //전 화면에 접근하기 위함
+//            let vc = navigationController?.viewControllers[index] as! ViewController
+//            //전 화면의 모델에 접근해서 멤버를 업데이트
+//            vc.memberListManager.updateMemberInfo(index: memberId, member!)
             
             
             //델리게이트 방식으로 구현⭐️
-            //delegate?.update(index: memberId, member!)
+            delegate?.update(index: memberId, member!)
         }
         
         //(일처리를 다한 후에) 전 화면으로 돌아가기
         self.navigationController?.popViewController(animated: true)
         
     }
+    deinit{
+        print("디테일 뷰컨트롤러 해제")
+    }
 }
+
+// MARK: - 피커뷰 델리게이트 설정
 
 extension DetailViewController: PHPickerViewControllerDelegate {
     

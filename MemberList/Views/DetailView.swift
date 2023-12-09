@@ -8,7 +8,9 @@
 import UIKit
 
 class DetailView: UIView {
-    
+    // MARK: - 멤버 저장속성 구현
+    // 멤버 데이터가 바뀌면 ===> didset(속성감시자) 실행
+    // 속성 감시자도 (저장속성을 관찰하는) 어쩃든 자체는 메서드임
     var member: Member?{
         didSet {
             guard var member = member else {
@@ -240,7 +242,6 @@ class DetailView: UIView {
     var stackViewTopConstraint: NSLayoutConstraint!
     // MARK: - 생성자 세팅
 
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -256,10 +257,11 @@ class DetailView: UIView {
     func setupStackView() {
         self.addSubview(stackView)
     }
+    
     // MARK: - 노티피케이션 세팅
 
     func setupNotification() {
-        //노티피케이션 등록
+        //노티피케이션 등록⭐️
         NotificationCenter.default.addObserver(self, selector: #selector(moveUpAction), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(moveDownAction), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -267,14 +269,17 @@ class DetailView: UIView {
     func setupMemberIdTextField() {
         memberIdTextField.delegate = self
     }
+    
     // MARK: - 오토레이아웃 세팅
 
+    //오토레이아웃 업데이트
     override func updateConstraints() {
         setConstraints()
         super.updateConstraints()
     }
     
     func setConstraints() {
+        
         stackViewTopConstraint = stackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10)
         
         NSLayoutConstraint.activate([
@@ -300,7 +305,8 @@ class DetailView: UIView {
             stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
         ])
     }
-    
+    // MARK: - 키보드가 나타날때와 내려갈때의 애니메이션 세팅
+
     @objc func moveUpAction() {
         stackViewTopConstraint.constant = -20
         UIView.animate(withDuration: 0.2){
@@ -319,6 +325,8 @@ class DetailView: UIView {
         self.endEditing(true)
     }
     
+    // MARK: - 소멸자 구현
+
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)

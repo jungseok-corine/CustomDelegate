@@ -9,6 +9,8 @@ import UIKit
 
 class MyTableViewCell: UITableViewCell {
     
+    // MARK: - 멤버 저장속성 구현
+    //멤버가 변할때마다 자동으로 업데이트 되도록 구현 didset(속성 감시자)
     var member: Member? {
         didSet {
             guard var member = member else { return }
@@ -57,13 +59,16 @@ class MyTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         setupStackView()
+        
+        //셀 오토레이아웃은 일반적으로 생성자에서 잡으면 됨⭐️⭐️⭐️
+        setupConstraints()
     }
     
     func setupStackView() {
-        self.addSubview(mainImageView)
         
+        self.contentView.addSubview(mainImageView)
         //셀 위에 스택뷰 올리기
-        self.addSubview(stackView)
+        self.contentView.addSubview(stackView)
         
         //스택뷰 위에 뷰들 올리기
         stackView.addArrangedSubview(memberNameLabel)
@@ -74,25 +79,13 @@ class MyTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    //스토리보드로 만들때 viewdidload 역할
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
     // MARK: - 오토레이아웃 셋팅
 
-    //오토레이아웃을 정하는 정확한 시점
-    override func updateConstraints() {
-        setupConstraints()
-        super.updateConstraints()
-    }
+    //(오토레이아웃 변하지 않는 경우) 일반적으로 생성자에서 잡으면 됨 ⭐️⭐️⭐️
+//    override func updateConstraints() {
+//        setupConstraints()
+//        super.updateConstraints()
+//    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -104,13 +97,17 @@ class MyTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             mainImageView.heightAnchor.constraint(equalToConstant: 40),
             mainImageView.widthAnchor.constraint(equalToConstant: 40),
-            mainImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            mainImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            //self.leadingAnchor롤 잡는 것보다 self.contentView.leadingAnchor로 잡는게 더 정확함⭐️
+            //(cell은 기본적으로 contentView를 가지고 있기 때문)
+            mainImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+            mainImageView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+            
             
             memberNameLabel.heightAnchor.constraint(equalToConstant: 20),
             
+            
             stackView.leadingAnchor.constraint(equalTo: mainImageView.trailingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: self.mainImageView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: self.mainImageView.bottomAnchor)
         ])
