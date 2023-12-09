@@ -246,6 +246,7 @@ class DetailView: UIView {
         backgroundColor = .white
         setupStackView()
         setupMemberIdTextField()
+        setupNotification()
     }
     
     required init?(coder: NSCoder) {
@@ -255,7 +256,13 @@ class DetailView: UIView {
     func setupStackView() {
         self.addSubview(stackView)
     }
-    
+    // MARK: - 노티피케이션 세팅
+
+    func setupNotification() {
+        //노티피케이션 등록
+        NotificationCenter.default.addObserver(self, selector: #selector(moveUpAction), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(moveDownAction), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
     
     func setupMemberIdTextField() {
         memberIdTextField.delegate = self
@@ -268,6 +275,7 @@ class DetailView: UIView {
     }
     
     func setConstraints() {
+        stackViewTopConstraint = stackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10)
         
         NSLayoutConstraint.activate([
             mainImageView.heightAnchor.constraint(equalToConstant: 150),
@@ -286,13 +294,35 @@ class DetailView: UIView {
             addressLabel.widthAnchor.constraint(equalToConstant: labelWidth),
             
             
-            stackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
+            stackViewTopConstraint,
             stackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
         ])
     }
     
+    @objc func moveUpAction() {
+        stackViewTopConstraint.constant = -20
+        UIView.animate(withDuration: 0.2){
+            self.layoutIfNeeded()
+        }
+    }
+    
+    @objc func moveDownAction() {
+        stackViewTopConstraint.constant = 10
+        UIView.animate(withDuration: 0.2) {
+            self.layoutIfNeeded()
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.endEditing(true)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
 }
 
 // MARK: - 텍스트필드 델리게이트 구현
@@ -301,7 +331,7 @@ extension DetailView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         //멤버 아이디는 수정 못하도록 설정 (멤버아이디의 텍스트필드는 입력 안되도록 설정)
-        if textField == memberId\ {
+        if textField == memberIdTextField {
             return false
         }
         //나머지 텍스트필드는 관계없이 설정 가능
