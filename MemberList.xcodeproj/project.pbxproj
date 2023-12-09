@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		99199C9C2B240DD80043E9B0 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99199C9B2B240DD80043E9B0 /* DetailView.swift */; };
+		99199C9F2B241AF00043E9B0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99199C9E2B241AF00043E9B0 /* DetailViewController.swift */; };
 		997874EF2B22E44200946D2E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997874EE2B22E44200946D2E /* AppDelegate.swift */; };
 		997874F12B22E44200946D2E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997874F02B22E44200946D2E /* SceneDelegate.swift */; };
 		997874F32B22E44200946D2E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997874F22B22E44200946D2E /* ViewController.swift */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		99199C9B2B240DD80043E9B0 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		99199C9E2B241AF00043E9B0 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		997874EB2B22E44200946D2E /* MemberList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemberList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		997874EE2B22E44200946D2E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		997874F02B22E44200946D2E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				997874F22B22E44200946D2E /* ViewController.swift */,
+				99199C9E2B241AF00043E9B0 /* DetailViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -87,6 +92,7 @@
 			children = (
 				997874F42B22E44200946D2E /* Main.storyboard */,
 				9978BA042B235F1C0043B0FD /* MyTableViewCell.swift */,
+				99199C9B2B240DD80043E9B0 /* DetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -174,9 +180,11 @@
 				9978BA032B235A7D0043B0FD /* MemberListManager.swift in Sources */,
 				997874F32B22E44200946D2E /* ViewController.swift in Sources */,
 				997874EF2B22E44200946D2E /* AppDelegate.swift in Sources */,
+				99199C9C2B240DD80043E9B0 /* DetailView.swift in Sources */,
 				997874F12B22E44200946D2E /* SceneDelegate.swift in Sources */,
 				9978BA012B233F9E0043B0FD /* Member.swift in Sources */,
 				9978BA052B235F1C0043B0FD /* MyTableViewCell.swift in Sources */,
+				99199C9F2B241AF00043E9B0 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

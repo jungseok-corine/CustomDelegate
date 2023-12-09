@@ -9,6 +9,16 @@ import UIKit
 
 class MyTableViewCell: UITableViewCell {
     
+    var member: Member? {
+        didSet {
+            guard var member = member else { return }
+            mainImageView.image = member.memberImage
+            memberNameLabel.text = member.name
+            addressLabel.text = member.address
+        }
+    }
+    
+    
     // MARK: - UI구현
     
     let mainImageView: UIImageView = {
@@ -79,6 +89,13 @@ class MyTableViewCell: UITableViewCell {
     //오토레이아웃을 정하는 정확한 시점
     override func updateConstraints() {
         setupConstraints()
+        super.updateConstraints()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.mainImageView.clipsToBounds = true
+        self.mainImageView.layer.cornerRadius = self.mainImageView.frame.width / 2
     }
     
     func setupConstraints() {
